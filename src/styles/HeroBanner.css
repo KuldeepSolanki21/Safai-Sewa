@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── ANIMISTA CUSTOM POP-UP ANIMATION ── */
+.text-pop-up-top {
+    animation: text-pop-up-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes text-pop-up-top {
+    0% {
+        transform: scale(0.9) translateY(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ── Section Layout ── */
+.hero-full-banner {
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+.hero-container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 5%;
+    box-sizing: border-box;
+}
+
+.hero-content {
+    max-width: 600px;
+    z-index: 10;
+    /* Fixed: Back layer images se upar rakhne ke liye */
+    position: relative;
+}
+
+.hero-title {
+    font-size: clamp(28px, 5vw, 64px);
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.text-green {
+    color: #2e7d32;
+}
+
+.hero-description {
+    font-size: clamp(14px, 2vw, 18px);
+    color: #333333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+/* ── STANDARD BUTTONS BASE ── */
+.btn-book {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    height: 54px;
+    box-sizing: border-box;
+}
+
+.btn-book:hover {
+    background: #1A4314;
+}
+
+/* ── GOOEY LIQUID BLOB WHATSAPP BUTTON ── */
+.btn-whatsapp.blob-btn {
+    z-index: 1;
+    position: relative;
+    padding: 0 28px;
+    height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #ffffff;
+    outline: none;
+    border: none;
+    transition: color 0.5s;
+    border-radius: 30px;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.btn-whatsapp-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #25D366;
+    transition: color 0.5s ease;
+    white-space: nowrap;
+}
+
+.btn-whatsapp-content .fa-whatsapp {
+    font-size: 24px;
+}
+
+.btn-whatsapp.blob-btn:before {
+    content: "";
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #25D366;
+    border-radius: 30px;
+    box-sizing: border-box;
+}
+
+.btn-whatsapp.blob-btn:hover .btn-whatsapp-content {
+    color: #ffffff;
+}
+
+.blob-btn__inner {
+    z-index: -1;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    background: #ffffff;
+}
+
+.blob-btn__blobs {
+    position: relative;
+    display: block;
+    height: 100%;
+    filter: url('#goo');
+}
+
+.blob-btn__blob {
+    position: absolute;
+    top: 2px;
+    width: 25%;
+    height: 100%;
+    background: #25D366;
+    border-radius: 100%;
+    transform: translate3d(0, 150%, 0) scale(1.4);
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.blob-btn__blob:nth-child(1) {
+    left: 0%;
+    transition-delay: 0s;
+}
+
+.blob-btn__blob:nth-child(2) {
+    left: 25%;
+    transition-delay: 0.08s;
+}
+
+.blob-btn__blob:nth-child(3) {
+    left: 50%;
+    transition-delay: 0.16s;
+}
+
+.blob-btn__blob:nth-child(4) {
+    left: 75%;
+    transition-delay: 0.24s;
+}
+
+.btn-whatsapp.blob-btn:hover .blob-btn__blob {
+    transform: translate3d(0, 0, 0) scale(1.4);
+}
+
+/* ── REUSABLE ACCENTS ── */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+    margin-bottom: 15px;
+}
+
+.badge-icon {
+    color: #28a745;
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+.badge-text {
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* ── CRITICAL MOBILE RESPONSIVE RE-ARCHITECTURE ── */
+@media (max-width: 991px) {
+    .hero-full-banner {
+        background-position: 65% center;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-full-banner {
+        /* Fixed overlay gradient padding for maximum text visibility background protection */
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%), url('../assets/hero-team.jpeg') !important;
+        background-position: 40% center;
+        text-align: center;
+        min-height: calc(100vh - 60px);
+        padding: 40px 0;
+        display: flex;
+        align-items: flex-start;
+        /* Form shifts content up smoothly */
+    }
+
+    .hero-container {
+        padding: 0 20px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        margin: 20px auto 0 auto;
+    }
+
+    .hero-title {
+        font-size: 32px;
+        line-height: 1.2;
+        color: #111111;
+        margin-top: 10px;
+    }
+
+    .hero-description {
+        font-size: 15px;
+        color: #444444;
+        margin-bottom: 25px;
+        padding: 0 10px;
+    }
+
+    .hero-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        /* Stacked layout vertically */
+        gap: 12px !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    /* Fixed: Button overlaps resolved by explicitly sizing layout heights bounds */
+    .btn-book,
+    .btn-whatsapp.blob-btn {
+        width: 100% !important;
+        max-width: 290px !important;
+        height: 50px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
+        box-sizing: border-box !important;
+    }
+
+    .btn-whatsapp.blob-btn {
+        overflow: hidden !important;
+        border: 2px solid #25D366 !important;
+        background-color: #25D366 !important;
+    }
+
+    .btn-whatsapp-content {
+        color: #ffffff !important;
+    }
+
+    .blob-btn__inner {
+        display: none !important;
+        /* Suspends gooey liquid effect on mobile viewport to prevent clipping */
+    }
+}
