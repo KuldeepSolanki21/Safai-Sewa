@@ -102,7 +102,6 @@ export default function BookingPage() {
         }
 
         try {
-            // 💥 FIXED: Linked using the dynamic BACKEND_URL system layer
             const response = await fetch(`${BACKEND_URL}/api/bookings/create`, {
                 method: 'POST',
                 headers: {

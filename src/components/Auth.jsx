@@ -14,10 +14,10 @@ export default function Auth({ onClose }) {
         confirmPassword: ""
     });
 
-    // ── 🧠 DYNAMIC CONFIGURATION ENVIRONMENT LINK ──
+    // ── 🧠 DYNAMIC CONFIGURATION ENVIRONMENT LINK (💥 FIXED LIVE BACKEND URL) ──
     const BACKEND_URL = window.location.hostname === "localhost"
         ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com"; // Replace with your live Render URL later
+        : "https://safai-sewa.onrender.com";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -57,7 +57,8 @@ export default function Auth({ onClose }) {
             }
 
             try {
-                const response = await fetch(`${BACKEND_URL}/api/users/signup`, {
+                // 💥 FIXED: Route badal kar '/api/users/register' kar diya hai backend matching ke liye
+                const response = await fetch(`${BACKEND_URL}/api/users/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -74,7 +75,7 @@ export default function Auth({ onClose }) {
                     alert("Registration successful!");
                     setIsSignUp(false);
                 } else {
-                    alert(data.message);
+                    alert(data.message || "Registration failed.");
                 }
             } catch (error) {
                 console.error("Signup error details:", error);

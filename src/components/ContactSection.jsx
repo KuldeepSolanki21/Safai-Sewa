@@ -4,12 +4,12 @@ import "../styles/ContactSection.css";
 export default function ContactSection() {
     const [formData, setFormData] = useState({ name: "", email: "", message: "" });
     const [sent, setSent] = useState(false);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
 
     // ── 🧠 DYNAMIC ENVIRONMENT PROXY URL CHECK ──
-    const BACKEND_URL = window.location.hostname === "localhost" 
-        ? "http://localhost:5000" 
-        : "https://your-backend-service.onrender.com"; // Replace with your live Render URL later
+    const BACKEND_URL = window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : "https://safai-sewa.onrender.com";
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
