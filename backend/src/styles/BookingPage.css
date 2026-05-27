@@ -1,0 +1,371 @@
+.bk-page-wrapper {
+    font-family: 'Poppins', sans-serif;
+    background: #fdfdfd;
+    color: #333;
+    padding-bottom: 60px;
+    width: 100%;
+}
+
+/* ── Hero Banner ── */
+.bk-hero-banner {
+    background-image: linear-gradient(135deg, rgba(26, 67, 20, 0.9), rgba(46, 125, 50, 0.85)), url("../assets/hero-team.jpeg");
+    background-size: cover;
+    background-position: center;
+    padding: 70px 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.bk-hero-content h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.bk-hero-content p {
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+/* ── Main Container Grid Layout ── */
+.bk-main-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+}
+
+.bk-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A4314;
+    margin-bottom: 15px;
+}
+
+/* ── Left Grid Selection Cards ── */
+.bk-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.bk-service-card {
+    background: #fff;
+    border: 1px solid #eef2f5;
+    border-radius: 12px;
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.bk-service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.bk-service-card.active {
+    border-color: #2e7d32;
+    background-color: #f5fbf6;
+    box-shadow: 0 8px 25px rgba(46, 125, 50, 0.1);
+}
+
+.bk-card-icon {
+    font-size: 26px;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.bk-service-card h4 {
+    font-size: 15px;
+    color: #222;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.bk-card-price {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* ── Facilities Details Box ── */
+.bk-details-display-box {
+    background: #ffffff;
+    border: 1px solid #eef2f5;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+}
+
+.bk-details-display-box h3 {
+    font-size: 16px;
+    color: #1A4314;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.bk-facilities-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.bk-facilities-list li {
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bk-facilities-list li i {
+    color: #2e7d32;
+}
+
+/* ── Hours Configurator ── */
+.bk-hours-configurator h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.bk-hours-options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.bk-hour-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #dce1e5;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.bk-hour-btn:hover {
+    border-color: #2e7d32;
+    color: #2e7d32;
+}
+
+.bk-hour-btn.active {
+    background: #2e7d32;
+    border-color: #2e7d32;
+    color: #fff;
+}
+
+.bk-hours-helper-text {
+    font-size: 11.5px;
+    color: #888;
+    line-height: 1.4;
+}
+
+/* ── RIGHT COLUMN: Checkout Sticky Card ── */
+.bk-checkout-sticky-card {
+    background: #ffffff;
+    border: 1px solid #eef2f5;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 100px;
+}
+
+.bk-checkout-sticky-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A4314;
+    margin-bottom: 4px;
+}
+
+.bk-checkout-helper {
+    font-size: 12.5px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.bk-divider {
+    border: none;
+    border-top: 1px dashed #e2e8f0;
+    margin: 12px 0;
+}
+
+.bk-receipt-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.bk-receipt-row strong {
+    color: #222;
+}
+
+.bk-receipt-row.total-row {
+    margin-top: 12px;
+    align-items: center;
+}
+
+.bk-grand-price {
+    font-size: 22px;
+    color: #2e7d32 !important;
+    font-weight: 800;
+}
+
+/* ── Form Inputs Field Handlings ── */
+.bk-checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 12px;
+}
+
+.bk-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.bk-input-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.bk-input-group input,
+.bk-input-group select,
+.bk-input-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #dce1e5;
+    border-radius: 8px;
+    font-size: 13.5px;
+    outline: none;
+    background: #fafafa !important;
+    color: #222222 !important;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+.bk-input-group select option {
+    background-color: #ffffff !important;
+    color: #222222 !important;
+}
+
+.bk-input-group input:focus,
+.bk-input-group select:focus,
+.bk-input-group textarea:focus {
+    border-color: #2e7d32;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.bk-form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.bk-submit-btn {
+    width: 100%;
+    background: #2e7d32;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 14.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+    transition: 0.3s;
+}
+
+.bk-submit-btn:hover {
+    background: #1A4314;
+    transform: translateY(-2px);
+}
+
+/* ── Success Block Look ── */
+.bk-success-animation {
+    text-align: center;
+    padding: 15px 0;
+}
+
+.bk-success-animation .success-icon {
+    font-size: 40px;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+/* ── Responsive Media Queries ── */
+
+/* Tablets aur Medium Screens (Laptops) */
+@media (max-width: 991px) {
+    .bk-main-container {
+        grid-template-columns: 1fr;
+        /* Single column layout */
+        gap: 25px;
+    }
+
+    .bk-checkout-sticky-card {
+        position: static;
+        /* Sticky scroll hat jayega tab me */
+    }
+
+    .bk-hero-banner {
+        padding: 50px 20px;
+    }
+
+    .bk-hero-content h1 {
+        font-size: 28px;
+    }
+}
+
+/* Chote Mobile Screens */
+@media (max-width: 576px) {
+    .bk-main-container {
+        padding: 0 15px;
+        margin: 20px auto;
+    }
+
+    .bk-services-grid {
+        grid-template-columns: 1fr;
+        /* Cards vertical stacked ho jayenge */
+    }
+
+    .bk-form-grid-2 {
+        grid-template-columns: 1fr;
+        /* Date aur Slot ek ke niche ek aayenge */
+        gap: 14px;
+    }
+
+    .bk-facilities-list {
+        grid-template-columns: 1fr;
+    }
+
+    .bk-details-display-box {
+        padding: 15px;
+    }
+
+    .bk-checkout-sticky-card {
+        padding: 15px;
+    }
+}

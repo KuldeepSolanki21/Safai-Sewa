@@ -1,0 +1,222 @@
+/* ── Main Footer Box ── */
+.gs-footer-section {
+    background-color: #e8f5f2;
+    font-family: 'Poppins', sans-serif;
+    padding-top: 60px;
+    border-top: 1px solid #eef2f5;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gs-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 50px 24px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+.gs-footer-col {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* ── Logo Layout Custom Sync ── */
+.gs-footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.gs-f-logo-img {
+    height: 62px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* FIXED: Header ki tarah upar-niche stacking text container */
+.gs-f-logo-text-stack {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.gs-f-logo-text-stack .safai-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1A4314;
+    /* Brand Dark Green */
+    letter-spacing: 0.5px;
+}
+
+.gs-f-logo-text-stack .sewa-logo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2e7d32;
+    /* Brand Light Green */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.gs-footer-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.gs-footer-heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 22px;
+    position: relative;
+}
+
+.gs-footer-links,
+.gs-footer-hours {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gs-footer-links a {
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.gs-footer-links a:hover {
+    color: #2e7d32;
+}
+
+.gs-footer-hours li {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gs-footer-hours .day {
+    font-weight: 600;
+    color: #444;
+}
+
+/* Weekend open text visibility color */
+.gs-footer-hours .status-open {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+/* ── APP BUTTON LAYOUT DESIGNS ── */
+.gs-footer-apps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 160px;
+}
+
+.gs-f-app-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.gs-f-app-btn:hover {
+    background-color: #222222;
+    transform: translateY(-2px);
+}
+
+.gs-f-app-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.gs-f-app-sub {
+    font-size: 9px;
+    opacity: 0.8;
+    line-height: 1.1;
+}
+
+.gs-f-app-name {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* ── FOOTER BOTTOM BAR ── */
+.gs-footer-bottom {
+    border-top: 1px solid #f1f5f7;
+    padding: 24px 0;
+    width: 100%;
+}
+
+.gs-footer-bottom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gs-copyright {
+    font-size: 14px;
+    color: #888;
+}
+
+.gs-footer-socials {
+    display: flex;
+    gap: 20px;
+}
+
+.gs-footer-socials a {
+    color: #2e7d32;
+    font-size: 18px;
+    transition: transform 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+.gs-footer-socials a:hover {
+    color: #1A4314;
+    transform: scale(1.2);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 992px) {
+    .gs-footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 550px) {
+    .gs-footer-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .gs-footer-bottom-container {
+        flex-direction: column-reverse;
+        gap: 20px;
+        text-align: center;
+    }
+}

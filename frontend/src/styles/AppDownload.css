@@ -1,0 +1,163 @@
+/* ── Section ── */
+.app-section {
+  background: white;
+  padding: 80px 20px;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Card (Converted to row for side-by-side layout) ── */
+.app-card {
+  background: #e8f5f2;
+  border-radius: 32px;
+  max-width: 1000px;
+  /* Width thodi badhai taaki dono side perfectly fit ho sakein */
+  width: 100%;
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: row;
+  /* Desktop par side by side layout */
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  overflow: hidden;
+}
+
+/* ══════════════════════
+   TEXT CONTENT (Left Column)
+══════════════════════ */
+.app-content {
+  flex: 1.2;
+  text-align: left;
+  /* Alignment left kiya professional premium feel ke liye */
+}
+
+.app-heading {
+  font-size: 38px;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.app-subtext {
+  font-size: 16px;
+  color: #444;
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 0 32px 0;
+}
+
+/* Store Buttons Grid Alignment */
+.app-store-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.store-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-width: 170px;
+  border: 1.5px solid #222;
+  background: #000;
+}
+
+.store-btn:hover {
+  background: #222;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.store-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.store-sub {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+  line-height: 1.2;
+}
+
+.store-name {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* ══════════════════════
+   IMAGE SHOWCASE (Right Column)
+══════════════════════ */
+.app-phones {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.app-showcase-img {
+  width: 100%;
+  max-width: 420px;
+  /* Image ko proper badi size di */
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.12));
+  /* Mockup standard shadow */
+}
+
+/* ══════════════════════
+   RESPONSIVE DESIGN
+══════════════════════ */
+@media (max-width: 900px) {
+  .app-card {
+    flex-direction: column-reverse;
+    /* Mobile par image pehle upar, text niche */
+    padding: 40px 30px;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .app-content {
+    text-align: center;
+  }
+
+  .app-subtext {
+    margin: 0 auto 28px;
+  }
+
+  .app-store-btns {
+    justify-content: center;
+  }
+
+  .app-heading {
+    font-size: 30px;
+  }
+
+  .app-showcase-img {
+    max-width: 340px;
+    /* Medium screen formats sizing */
+  }
+}
+
+@media (max-width: 480px) {
+  .app-heading {
+    font-size: 26px;
+  }
+
+  .app-showcase-img {
+    max-width: 280px;
+    /* Small phone screen layout scaling */
+  }
+}

@@ -1,0 +1,323 @@
+/* ── Section ── */
+.wcu-section {
+    background: #e8f5f2;
+    padding: 80px 20px;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.wcu-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+/* ════════════════════════
+   LEFT SIDE
+════════════════════════ */
+.wcu-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.wcu-heading {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 18px;
+}
+
+.wcu-subtext {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 480px;
+}
+
+/* ── 2-column feature grid ── */
+.wcu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 32px;
+}
+
+.wcu-feature-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+/* Green radio-style dot */
+.wcu-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #2ecc71;
+    flex-shrink: 0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wcu-dot::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2ecc71;
+}
+
+.wcu-feature-title h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.wcu-feature-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    padding-left: 30px;
+}
+
+/* ════════════════════════
+   RIGHT SIDE
+════════════════════════ */
+.wcu-right {
+    flex: 1;
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Double Oval Images ── */
+.wcu-images {
+    position: relative;
+    width: 340px;
+    height: 500px;
+    margin: 0 auto;
+}
+
+/* shared oval style */
+.img-oval {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 999px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.13);
+}
+
+.img-oval img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+/* top-left oval — taller, behind */
+.img-oval--top {
+    width: 195px;
+    height: 340px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* bottom-right oval — slightly lower, in front */
+.img-oval--bottom {
+    width: 195px;
+    height: 340px;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+}
+
+/* ── Badge — top-left corner ── */
+.wcu-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wcu-badge svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotateBadge 10s linear infinite;
+    background: white;
+    border-radius: 50%;
+}
+
+.badge-arrow {
+    position: relative;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2e7d32;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #fff;
+}
+
+@keyframes rotateBadge {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+    .wcu-images {
+        width: 280px;
+        height: 420px;
+    }
+
+    .img-oval--top,
+    .img-oval--bottom {
+        width: 160px;
+        height: 280px;
+    }
+}
+
+@media (max-width: 520px) {
+    .wcu-images {
+        width: 240px;
+        height: 360px;
+    }
+
+    .img-oval--top,
+    .img-oval--bottom {
+        width: 138px;
+        height: 240px;
+    }
+
+    .wcu-badge {
+        width: 82px;
+        height: 82px;
+    }
+
+    .wcu-badge svg {
+        width: 82px;
+        height: 82px;
+    }
+}
+
+/* ── Rotating Badge ── */
+.wcu-badge {
+    position: absolute;
+    top: 0px;
+    left: 20%;
+    transform: translateX(-50%);
+    z-index: 10;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wcu-badge svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotateBadge 10s linear infinite;
+    background: white;
+    border-radius: 50%;
+}
+
+.badge-arrow {
+    position: relative;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    background: #2e7d32;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #fff;
+}
+
+@keyframes rotateBadge {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ════════════════════════
+   RESPONSIVE
+════════════════════════ */
+@media (max-width: 960px) {
+    .wcu-container {
+        flex-direction: column;
+        gap: 48px;
+    }
+
+    .wcu-right {
+        width: 100%;
+        min-height: 380px;
+    }
+
+    .wcu-images {
+        height: 360px;
+    }
+
+    .wcu-heading {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 520px) {
+    .wcu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wcu-images {
+        height: 280px;
+    }
+
+    .wcu-heading {
+        font-size: 24px;
+    }
+
+    .wcu-badge {
+        width: 88px;
+        height: 88px;
+    }
+
+    .wcu-badge svg {
+        width: 88px;
+        height: 88px;
+    }
+}
