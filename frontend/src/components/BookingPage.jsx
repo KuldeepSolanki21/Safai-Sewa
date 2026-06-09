@@ -21,8 +21,7 @@ export default function BookingPage() {
     const [todayDate, setTodayDate] = useState("");
 
     // ── LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = "http://localhost:5000";
-
+    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
     // Auto-fill logged in user info
     useEffect(() => {
         const storedName = localStorage.getItem("userName");

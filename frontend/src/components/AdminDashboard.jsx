@@ -11,7 +11,7 @@ export default function AdminDashboard() {
     const navigate = useNavigate();
 
     // ──  LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = "http://localhost:5000";
+    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     useEffect(() => {
         const token = localStorage.getItem("token");

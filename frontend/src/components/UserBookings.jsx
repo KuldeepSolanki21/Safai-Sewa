@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/UserBookings.css";
 
@@ -8,12 +8,8 @@ export default function UserBookings() {
     const userPhone = localStorage.getItem("userPhone");
     const navigate = useNavigate();
 
-    // 1. URL reference caching taaki component baar-baar load hone par re-render na mare
-    const BACKEND_URL = useMemo(() => {
-        return window.location.hostname === "localhost"
-            ? "http://localhost:5000"
-            : "https://safai-sewa.onrender.com";
-    }, []);
+    // ── LIVE & LOCAL DYNAMIC SERVER LINK (FIXED) ──
+    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     useEffect(() => {
         if (!userPhone) {

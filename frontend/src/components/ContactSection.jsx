@@ -6,10 +6,8 @@ export default function ContactSection() {
     const [sent, setSent] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // ── 🧠 DYNAMIC ENVIRONMENT PROXY URL CHECK ──
-    const BACKEND_URL = window.location.hostname === "localhost"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // ── LIVE & LOCAL DYNAMIC SERVER LINK (FIXED) ──
+    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -116,7 +114,6 @@ export default function ContactSection() {
                             {sent ? "✔ Message Sent!" : loading ? "Sending..." : "Send Message"}
                         </button>
                     </form>
-                    {/* ── ⚡ NETLIFY CACHE DEPLOYMENT FORCE REBUILD ENGINE TRACE ── */}
                 </div>
 
             </div>

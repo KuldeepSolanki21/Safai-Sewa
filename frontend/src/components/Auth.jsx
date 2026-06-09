@@ -18,7 +18,7 @@ export default function Auth({ onClose }) {
     });
 
     // ── 🧠 LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = "http://localhost:5000";
+    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     const handleChange = (e) => {
         const { name, value } = e.target;

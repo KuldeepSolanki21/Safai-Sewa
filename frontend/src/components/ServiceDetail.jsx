@@ -23,8 +23,7 @@ export default function ServiceDetail() {
     });
 
     // ── 🧠 LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = "http://localhost:5000";
-
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
     const currentHoursList = service?.hoursOptions || [2, 3, 4];
     const [selectedHours, setSelectedHours] = useState(currentHoursList[0]);
     const [finalPrice, setFinalPrice] = useState(0);
