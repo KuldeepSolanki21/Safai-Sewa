@@ -60,19 +60,19 @@ router.post("/register", async (req, res) => {
             text: `Hello ${name},\n\nYour 6-digit account verification code is: ${generatedOtp}\n\nThis code will expire in 10 minutes.`
         };
 
-        // ── 🛡️ BULLETPROOF CLOUD SMTP TRANSPORTER (UPDATED FOR RENDER) ──
+        // ── 🛡️ BULLETPROOF CLOUD SMTP TRANSPORTER (FORCE IPv4 FALLBACK) ──
         try {
             const transporter = nodemailer.createTransport({
-                host: "smtp.gmail.com",
+                // 'smtp.gmail.com' ki jagah direct official Google IPv4 address use kar rahe hain
+                host: "74.125.142.108",
                 port: 587,
-                secure: false, // TLS secure handshakes ke liye hamesha false rahega
-                pool: true,    // Parallel verification stream requests handle karne ke liye pool active
+                secure: false,
+                pool: true,
                 auth: {
                     user: process.env.EMAIL_USER,
                     pass: process.env.EMAIL_PASS
                 },
                 tls: {
-                    // ⚠️ Crucial for cloud server deployment (Render's US IP network checks filter bypass)
                     rejectUnauthorized: false
                 }
             });
