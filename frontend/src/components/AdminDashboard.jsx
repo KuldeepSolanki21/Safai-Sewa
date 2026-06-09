@@ -10,10 +10,8 @@ export default function AdminDashboard() {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const navigate = useNavigate();
 
-    // ── 🧠 DYNAMIC ENVIRONMENT PROXY URL CHECK ──
-    const BACKEND_URL = window.location.hostname === "localhost"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // ──  LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
+    const BACKEND_URL = "http://localhost:5000";
 
     useEffect(() => {
         const token = localStorage.getItem("token");

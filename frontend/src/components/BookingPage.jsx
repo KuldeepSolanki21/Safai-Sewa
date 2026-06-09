@@ -20,12 +20,10 @@ export default function BookingPage() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [todayDate, setTodayDate] = useState("");
 
-    // ── 🧠 DYNAMIC CONFIGURATION ENVIRONMENT PROXY LINK ──
-    const BACKEND_URL = window.location.hostname === "localhost"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // ── LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
+    const BACKEND_URL = "http://localhost:5000";
 
-    // Auto-fill logged in user info for smoother UX execution logs
+    // Auto-fill logged in user info
     useEffect(() => {
         const storedName = localStorage.getItem("userName");
         const storedPhone = localStorage.getItem("userPhone");
@@ -38,7 +36,7 @@ export default function BookingPage() {
         }
     }, []);
 
-    // Calculate current dynamic date window
+    // Calculate current date
     useEffect(() => {
         const today = new Date();
         const yyyy = today.getFullYear();
@@ -51,7 +49,7 @@ export default function BookingPage() {
         setTodayDate(`${yyyy}-${mm}-${dd}`);
     }, []);
 
-    // ── SLIDER REDIRECT QUERY SYNC ENGINE ──
+    // Slider redirect query synchronization
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const serviceParam = params.get("service");
@@ -61,11 +59,12 @@ export default function BookingPage() {
             if (matchedService) {
                 setSelectedService(matchedService);
                 setSelectedHours(matchedService.hoursOptions[0]);
+                setIsSuccess(false); // Reset success screen view state context
             }
         }
     }, [location]);
 
-    // Dynamic price recalculations engine
+    // Dynamic price calculation
     useEffect(() => {
         if (selectedService) {
             const baseHours = selectedService.hoursOptions[0];
@@ -80,6 +79,7 @@ export default function BookingPage() {
     const handleServiceChange = (service) => {
         setSelectedService(service);
         setSelectedHours(service.hoursOptions[0]);
+        setIsSuccess(false); // 💥 FIXED: Reset state immediately when a user switches cleaning layout models
     };
 
     const handleInputChange = (e) => {

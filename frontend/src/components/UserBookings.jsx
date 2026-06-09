@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/UserBookings.css"; 
+import "../styles/UserBookings.css";
 
 export default function UserBookings() {
     const [myBookings, setMyBookings] = useState([]);
@@ -8,9 +8,12 @@ export default function UserBookings() {
     const userPhone = localStorage.getItem("userPhone");
     const navigate = useNavigate();
 
-    const BACKEND_URL = window.location.hostname === "localhost" 
-        ? "http://localhost:5000" 
-        : "https://safai-sewa.onrender.com";
+    // 1. URL reference caching taaki component baar-baar load hone par re-render na mare
+    const BACKEND_URL = useMemo(() => {
+        return window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://safai-sewa.onrender.com";
+    }, []);
 
     useEffect(() => {
         if (!userPhone) {
@@ -21,16 +24,30 @@ export default function UserBookings() {
 
         const fetchMyHistoryLogs = async () => {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/users/my-bookings/${userPhone}`);
-                const data = await response.json();
-                if (response.ok) {
-                    setMyBookings(data.bookings || []);
-                } else {
-                    alert(data.message || "An issue occurred while compiling historical transaction records.");
+                const targetUrl = `${BACKEND_URL}/api/bookings/my-bookings/${userPhone.trim()}`;
+                console.log("Fetching history from clean URL:", targetUrl);
+
+                const response = await fetch(targetUrl);
+
+                // Strict validation handling 
+                if (!response.ok) {
+                    throw new Error(`Server returned error status code: ${response.status}`);
                 }
+
+                const data = await response.json();
+                console.log("Raw API Response Data:", data);
+
+                if (data && data.bookings) {
+                    setMyBookings(data.bookings);
+                } else if (Array.isArray(data)) {
+                    setMyBookings(data);
+                } else {
+                    setMyBookings([]);
+                }
+
             } catch (error) {
                 console.error("Historical trace engine execution failure:", error);
-                alert("Server execution timed out. Unable to reach backend pipelines.");
+                alert("Server execution timed out. Unable to parse backend records.");
             } finally {
                 setLoading(false);
             }
@@ -48,7 +65,7 @@ export default function UserBookings() {
             <h2 className="usb-main-heading">My Cleaning History Records</h2>
             <p className="usb-sub-tagline">Track all your current and historical operational slots details with Safai Sewa.</p>
 
-            {myBookings.length > 0 ? (
+            {myBookings && myBookings.length > 0 ? (
                 <div className="usb-logs-stack">
                     {myBookings.map((b, index) => (
                         <div key={b._id || index} className="usb-booking-card-item">

@@ -6,6 +6,9 @@ export default function Auth({ onClose }) {
     const [isForgot, setIsForgot] = useState(false);
     const [forgotEmail, setForgotEmail] = useState("");
 
+    const [isOtpStage, setIsOtpStage] = useState(false);
+    const [emailOtpToken, setEmailOtpToken] = useState("");
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -14,10 +17,8 @@ export default function Auth({ onClose }) {
         confirmPassword: ""
     });
 
-    // ── 🧠 DYNAMIC CONFIGURATION ENVIRONMENT LINK (💥 FIXED LIVE BACKEND URL) ──
-    const BACKEND_URL = window.location.hostname === "localhost"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // ── 🧠 LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
+    const BACKEND_URL = "http://localhost:5000";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,6 +31,33 @@ export default function Auth({ onClose }) {
             return;
         }
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleOtpVerificationSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/users/verify-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: formData.email,
+                    otp: emailOtpToken
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Account verification successful! You can now log in safely.");
+                setIsOtpStage(false);
+                setIsSignUp(false);
+            } else {
+                alert(data.message || "Invalid verification token code.");
+            }
+        } catch (error) {
+            console.error("OTP authentication operational state logs failure:", error);
+            alert("Local pipeline infrastructure verification network processing timeout.");
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -57,7 +85,6 @@ export default function Auth({ onClose }) {
             }
 
             try {
-                // 💥 FIXED: Route badal kar '/api/users/register' kar diya hai backend matching ke liye
                 const response = await fetch(`${BACKEND_URL}/api/users/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -72,16 +99,15 @@ export default function Auth({ onClose }) {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert("Registration successful!");
-                    setIsSignUp(false);
+                    alert("Verification OTP code has been transmitted to your email inbox.");
+                    setIsOtpStage(true); // 💥 Shift to OTP entry screen view
                 } else {
                     alert(data.message || "Registration failed.");
                 }
             } catch (error) {
                 console.error("Signup error details:", error);
-                alert("Unable to connect to the server. Please check if the backend is running.");
+                alert("Unable to process local database server sync registry instances state.");
             }
-
         } else {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/users/login`, {
@@ -107,8 +133,8 @@ export default function Auth({ onClose }) {
                     alert(data.message);
                 }
             } catch (error) {
-                console.error("Login error details:", error);
-                alert("Connection failed. Please check your server connection.");
+                console.error("Login monitoring layer runtime error logs stack:", error);
+                alert("Connection architecture state tracking validation errors.");
             }
         }
     };
@@ -133,6 +159,7 @@ export default function Auth({ onClose }) {
                         <button
                             type="button"
                             className="panel-toggle-btn"
+                            disabled={isOtpStage}
                             onClick={() => {
                                 setIsSignUp(!isSignUp);
                                 setIsForgot(false);
@@ -144,131 +171,150 @@ export default function Auth({ onClose }) {
                 </div>
 
                 <div className="auth-form-side">
-                    <form className="auth-form" onSubmit={handleSubmit}>
-                        <h1 className="auth-title">
-                            {isForgot ? "Reset Password" : isSignUp ? "Create Account" : "Sign In"}
-                        </h1>
-
-                        {!isForgot && (
-                            <div className="auth-social-container">
-                                <a href="#" className="social-icon"><i className="fa-brands fa-facebook-f"></i></a>
-                                <a href="#" className="social-icon"><i className="fa-brands fa-google"></i></a>
-                                <a href="#" className="social-icon"><i className="fa-brands fa-linkedin-in"></i></a>
+                    {isOtpStage ? (
+                        <form className="auth-form" onSubmit={handleOtpVerificationSubmit}>
+                            <h1 className="auth-title">Verify Email</h1>
+                            <span className="auth-subtitle">Enter the 6-digit OTP code dispatched to your email address</span>
+                            <div className="input-group">
+                                <i className="fa-solid fa-shield-halved input-icon"></i>
+                                <input
+                                    type="text"
+                                    required
+                                    maxLength="6"
+                                    placeholder="Enter OTP Verification Code"
+                                    value={emailOtpToken}
+                                    onChange={(e) => setEmailOtpToken(e.target.value)}
+                                />
                             </div>
-                        )}
+                            <button type="submit" className="auth-submit-btn">Verify and Create Account</button>
+                        </form>
+                    ) : (
+                        <form className="auth-form" onSubmit={handleSubmit}>
+                            <h1 className="auth-title">
+                                {isForgot ? "Reset Password" : isSignUp ? "Create Account" : "Sign In"}
+                            </h1>
 
-                        <span className="auth-subtitle">
-                            {isForgot ? "Enter credentials fields" : "or use your email account"}
-                        </span>
-
-                        {isForgot ? (
-                            <>
-                                <div className="input-group">
-                                    <i className="fa-solid fa-envelope input-icon"></i>
-                                    <input
-                                        type="email"
-                                        required
-                                        placeholder="Enter Registered Email"
-                                        value={forgotEmail}
-                                        onChange={(e) => setForgotEmail(e.target.value)}
-                                    />
+                            {!isForgot && (
+                                <div className="auth-social-container">
+                                    <a href="#" className="social-icon"><i className="fa-brands fa-facebook-f"></i></a>
+                                    <a href="#" className="social-icon"><i className="fa-brands fa-google"></i></a>
+                                    <a href="#" className="social-icon"><i className="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <button type="submit" className="auth-submit-btn">Send Link</button>
-                                <button
-                                    type="button"
-                                    className="auth-back-to-login"
-                                    onClick={() => setIsForgot(false)}
-                                >
-                                    Back to Login
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                {isSignUp && (
+                            )}
+
+                            <span className="auth-subtitle">
+                                {isForgot ? "Enter credentials fields" : "or use your email account"}
+                            </span>
+
+                            {isForgot ? (
+                                <>
                                     <div className="input-group">
-                                        <i className="fa-solid fa-user input-icon"></i>
+                                        <i className="fa-solid fa-envelope input-icon"></i>
                                         <input
-                                            type="text"
-                                            name="name"
-                                            placeholder="Full Name"
-                                            value={formData.name}
-                                            onChange={handleChange}
+                                            type="email"
                                             required
+                                            placeholder="Enter Registered Email"
+                                            value={forgotEmail}
+                                            onChange={(e) => setForgotEmail(e.target.value)}
                                         />
                                     </div>
-                                )}
-
-                                <div className="input-group">
-                                    <i className="fa-solid fa-envelope input-icon"></i>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="Email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-
-                                {isSignUp && (
-                                    <div className="input-group">
-                                        <i className="fa-solid fa-phone input-icon"></i>
-                                        <input
-                                            type="tel"
-                                            name="phone"
-                                            maxLength="10"
-                                            pattern="[0-9]{10}"
-                                            placeholder="10-digit Phone Number"
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-                                )}
-
-                                <div className="input-group">
-                                    <i className="fa-solid fa-lock input-icon"></i>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        placeholder="Password"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-
-                                {isSignUp && (
-                                    <div className="input-group">
-                                        <i className="fa-solid fa-shield-halved input-icon"></i>
-                                        <input
-                                            type="password"
-                                            name="confirmPassword"
-                                            placeholder="Confirm Password"
-                                            value={formData.confirmPassword}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-                                )}
-
-                                {!isSignUp && (
+                                    <button type="submit" className="auth-submit-btn">Send Link</button>
                                     <button
                                         type="button"
-                                        className="forgot-password"
-                                        onClick={() => setIsForgot(true)}
-                                        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                                        className="auth-back-to-login"
+                                        onClick={() => setIsForgot(false)}
                                     >
-                                        Forgot your password?
+                                        Back to Login
                                     </button>
-                                )}
+                                </>
+                            ) : (
+                                <>
+                                    {isSignUp && (
+                                        <div className="input-group">
+                                            <i className="fa-solid fa-user input-icon"></i>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                placeholder="Full Name"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    )}
 
-                                <button type="submit" className="auth-submit-btn">
-                                    {isSignUp ? "Sign Up" : "Sign In"}
-                                </button>
-                            </>
-                        )}
-                    </form>
+                                    <div className="input-group">
+                                        <i className="fa-solid fa-envelope input-icon"></i>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+
+                                    {isSignUp && (
+                                        <div className="input-group">
+                                            <i className="fa-solid fa-phone input-icon"></i>
+                                            <input
+                                                type="tel"
+                                                name="phone"
+                                                maxLength="10"
+                                                pattern="[0-9]{10}"
+                                                placeholder="10-digit Phone Number"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    )}
+
+                                    <div className="input-group">
+                                        <i className="fa-solid fa-lock input-icon"></i>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            placeholder="Password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+
+                                    {isSignUp && (
+                                        <div className="input-group">
+                                            <i className="fa-solid fa-shield-halved input-icon"></i>
+                                            <input
+                                                type="password"
+                                                name="confirmPassword" // 💥 FIXED: Changing name token from 'password' to 'confirmPassword' prevents overwriting input values
+                                                placeholder="Confirm Password"
+                                                value={formData.confirmPassword}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                    )}
+
+                                    {!isSignUp && (
+                                        <button
+                                            type="button"
+                                            className="forgot-password"
+                                            onClick={() => setIsForgot(true)}
+                                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                                        >
+                                            Forgot your password?
+                                        </button>
+                                    )}
+
+                                    <button type="submit" className="auth-submit-btn">
+                                        {isSignUp ? "Sign Up" : "Sign In"}
+                                    </button>
+                                </>
+                            )}
+                        </form>
+                    )}
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { servicesData } from "../Data/servicesdata";
 import "../styles/ServiceDetail.css";
 
@@ -22,9 +22,8 @@ export default function ServiceDetail() {
         address: ""
     });
 
-    const BACKEND_URL = window.location.hostname === "localhost"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // ── 🧠 LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
+    const BACKEND_URL = "http://localhost:5000";
 
     const currentHoursList = service?.hoursOptions || [2, 3, 4];
     const [selectedHours, setSelectedHours] = useState(currentHoursList[0]);
@@ -32,6 +31,7 @@ export default function ServiceDetail() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [todayDate, setTodayDate] = useState("");
 
+    // Calculate current date constraint window
     useEffect(() => {
         const today = new Date();
         const yyyy = today.getFullYear();
@@ -44,6 +44,7 @@ export default function ServiceDetail() {
         setTodayDate(`${yyyy}-${mm}-${dd}`);
     }, []);
 
+    // Dynamic dynamic pricing compiler engine
     useEffect(() => {
         if (service) {
             const basePrice = service.basePrice || 499;
@@ -57,9 +58,10 @@ export default function ServiceDetail() {
         }
     }, [serviceId, selectedHours, service]);
 
+    // Handle route transitions reset parameters context
     useEffect(() => {
         window.scrollTo(0, 0);
-        setIsSubmitted(false);
+        setIsSubmitted(false); // 💥 FIXED: Break validation freeze loops immediately on category swap execution
         if (serviceId && servicesData[serviceId]) {
             setBookingData((prev) => ({ ...prev, selectedService: serviceId }));
             setSelectedHours(servicesData[serviceId].hoursOptions[0]);
@@ -385,7 +387,7 @@ export default function ServiceDetail() {
                                             value={bookingData.address}
                                             onChange={handleInputChange}
                                             required
-                                        ></textarea>
+                                        />
                                     </div>
 
                                     <button type="submit" className="confirm-booking-btn">
