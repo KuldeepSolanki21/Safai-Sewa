@@ -60,22 +60,30 @@ router.post("/register", async (req, res) => {
             text: `Hello ${name},\n\nYour 6-digit account verification code is: ${generatedOtp}\n\nThis code will expire in 10 minutes.`
         };
 
-        // ── 🛡️ BULLETPROOF NON-BLOCKING NODEMAILER ENGINE ──
+        // ── 🛡️ BULLETPROOF CLOUD SMTP TRANSPORTER (UPDATED FOR RENDER) ──
         try {
             const transporter = nodemailer.createTransport({
-                service: 'gmail',
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false, // TLS secure handshakes ke liye hamesha false rahega
+                pool: true,    // Parallel verification stream requests handle karne ke liye pool active
                 auth: {
                     user: process.env.EMAIL_USER,
                     pass: process.env.EMAIL_PASS
+                },
+                tls: {
+                    // ⚠️ Crucial for cloud server deployment (Render's US IP network checks filter bypass)
+                    rejectUnauthorized: false
                 }
             });
+
             await transporter.sendMail(mailOptions);
             console.log(`✔ OTP sent successfully via email to: ${lowerEmail}`);
         } catch (mailError) {
-            // Agar mail fail hoti hai (.env configuration error ki wajah se), toh ye code terminal pe OTP dega par frontend par error nahi fekega
             console.log("\n----------------------------------------------------------------");
-            console.log("⚠️ NODEMAILER DELIVERY FAILED (Check your .env App Password configuration)");
+            console.log("⚠️ NODEMAILER DELIVERY FAILED (Check your Render Dashboard Environment configuration)");
             console.log(`🔥 [LOCAL TERMINAL BACKUP] USER OTP IS: ${generatedOtp}`);
+            console.log(`❌ SMTP System Log: ${mailError.message}`);
             console.log("----------------------------------------------------------------\n");
         }
 
