@@ -6,8 +6,10 @@ export default function ContactSection() {
     const [sent, setSent] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // ── LIVE & LOCAL DYNAMIC SERVER LINK (FIXED) ──
-    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
+    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://safai-sewa-1.onrender.com";
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

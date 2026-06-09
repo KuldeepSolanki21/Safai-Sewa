@@ -20,8 +20,11 @@ export default function BookingPage() {
     const [isSuccess, setIsSuccess] = useState(false);
     const [todayDate, setTodayDate] = useState("");
 
-    // ── LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
+    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://safai-sewa-1.onrender.com";
+
     // Auto-fill logged in user info
     useEffect(() => {
         const storedName = localStorage.getItem("userName");
@@ -58,7 +61,7 @@ export default function BookingPage() {
             if (matchedService) {
                 setSelectedService(matchedService);
                 setSelectedHours(matchedService.hoursOptions[0]);
-                setIsSuccess(false); // Reset success screen view state context
+                setIsSuccess(false);
             }
         }
     }, [location]);
@@ -78,7 +81,7 @@ export default function BookingPage() {
     const handleServiceChange = (service) => {
         setSelectedService(service);
         setSelectedHours(service.hoursOptions[0]);
-        setIsSuccess(false); // 💥 FIXED: Reset state immediately when a user switches cleaning layout models
+        setIsSuccess(false);
     };
 
     const handleInputChange = (e) => {

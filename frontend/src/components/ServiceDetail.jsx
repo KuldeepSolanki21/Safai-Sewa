@@ -22,8 +22,11 @@ export default function ServiceDetail() {
         address: ""
     });
 
-    // ── 🧠 LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
+    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://safai-sewa-1.onrender.com";
+
     const currentHoursList = service?.hoursOptions || [2, 3, 4];
     const [selectedHours, setSelectedHours] = useState(currentHoursList[0]);
     const [finalPrice, setFinalPrice] = useState(0);
@@ -60,7 +63,7 @@ const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
     // Handle route transitions reset parameters context
     useEffect(() => {
         window.scrollTo(0, 0);
-        setIsSubmitted(false); // 💥 FIXED: Break validation freeze loops immediately on category swap execution
+        setIsSubmitted(false);
         if (serviceId && servicesData[serviceId]) {
             setBookingData((prev) => ({ ...prev, selectedService: serviceId }));
             setSelectedHours(servicesData[serviceId].hoursOptions[0]);
@@ -101,6 +104,7 @@ const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         const office = ["workstation-dusting", "server-room", "conference-room", "carpet-shampooing"];
         const commercial = ["retail-shop", "restaurant-degreasing", "floor-scrubbing", "showroom-cleaning"];
 
+        if (fullHome.includes(serviceId)) return "FULL_HOME";
         if (fullHome.includes(serviceId)) return "FULL_HOME";
         if (farmhouse.includes(serviceId)) return "FARMHOUSE";
         if (office.includes(serviceId)) return "OFFICE";

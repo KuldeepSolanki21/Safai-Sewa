@@ -10,8 +10,10 @@ export default function AdminDashboard() {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const navigate = useNavigate();
 
-    // ──  LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
+    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://safai-sewa-1.onrender.com";
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -133,7 +135,7 @@ export default function AdminDashboard() {
                 }}
             />
 
-            {/* VIEW VIEW VIEW PANE 1: BOOKING MANAGEMENT GRID */}
+            {/* VIEW PANE 1: BOOKING MANAGEMENT GRID */}
             {activeTab === "bookings" && (
                 <div style={{ overflowX: "auto", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", borderRadius: "8px" }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff", fontSize: "14px" }}>
@@ -175,7 +177,7 @@ export default function AdminDashboard() {
                 </div>
             )}
 
-            {/* VIEW VIEW VIEW PANE 2: AUDIT LOGS INTERFACES */}
+            {/* VIEW PANE 2: AUDIT LOGS INTERFACES */}
             {activeTab === "logins" && (
                 <div style={{ overflowX: "auto", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", borderRadius: "8px" }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff", fontSize: "14px" }}>

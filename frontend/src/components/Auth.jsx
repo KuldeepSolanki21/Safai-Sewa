@@ -17,8 +17,10 @@ export default function Auth({ onClose }) {
         confirmPassword: ""
     });
 
-    // ── 🧠 LOCALHOST ONLY PC DEVELOPMENT SERVER LINK ──
-    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
+    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://safai-sewa-1.onrender.com";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -100,7 +102,7 @@ export default function Auth({ onClose }) {
 
                 if (response.ok) {
                     alert("Verification OTP code has been transmitted to your email inbox.");
-                    setIsOtpStage(true); // 💥 Shift to OTP entry screen view
+                    setIsOtpStage(true);
                 } else {
                     alert(data.message || "Registration failed.");
                 }
@@ -288,7 +290,7 @@ export default function Auth({ onClose }) {
                                             <i className="fa-solid fa-shield-halved input-icon"></i>
                                             <input
                                                 type="password"
-                                                name="confirmPassword" // 💥 FIXED: Changing name token from 'password' to 'confirmPassword' prevents overwriting input values
+                                                name="confirmPassword"
                                                 placeholder="Confirm Password"
                                                 value={formData.confirmPassword}
                                                 onChange={handleChange}

@@ -8,8 +8,10 @@ export default function UserBookings() {
     const userPhone = localStorage.getItem("userPhone");
     const navigate = useNavigate();
 
-    // ── LIVE & LOCAL DYNAMIC SERVER LINK (FIXED) ──
-    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
+    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://safai-sewa-1.onrender.com";
 
     useEffect(() => {
         if (!userPhone) {
