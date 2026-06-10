@@ -8,7 +8,7 @@ import { verifyAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// 1. Send OTP & Pre-Register User
+// 1. Send OTP & Pre-Register User (SUPER-FAST NON-BLOCKING VERSION)
 router.post("/register", async (req, res) => {
     try {
         const { name, email, phone, password } = req.body;
@@ -60,41 +60,40 @@ router.post("/register", async (req, res) => {
             text: `Hello ${name},\n\nYour 6-digit account verification code is: ${generatedOtp}\n\nThis code will expire in 10 minutes.`
         };
 
-        // ── 🛡️ BULLETPROOF CLOUD SMTP TRANSPORTER (FORCE IPv4 FALLBACK) ──
-        try {
-            const transporter = nodemailer.createTransport({
-                // 'smtp.gmail.com' ki jagah direct official Google IPv4 address use kar rahe hain
-                host: "74.125.142.108",
-                port: 587,
-                secure: false,
-                pool: true,
-                auth: {
-                    user: process.env.EMAIL_USER,
-                    pass: process.env.EMAIL_PASS
-                },
-                tls: {
-                    rejectUnauthorized: false
-                }
+        // ── 🛡️ BACKGROUND ASYNC EMAIL ENGINE (Frontend ko wait nahi karwayega) ──
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            pool: true,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        // 'await' hata diya hai taaki ye background me chale aur thread block na ho
+        transporter.sendMail(mailOptions)
+            .then(() => console.log(`✔ [Background] OTP sent safely to: ${lowerEmail}`))
+            .catch((mailError) => {
+                console.log("\n----------------------------------------------------------------");
+                console.log("⚠️ NODEMAILER BACKGROUND DELIVERY FAILED");
+                console.log(`🔥 [LOCAL TERMINAL BACKUP] USER OTP IS: ${generatedOtp}`);
+                console.log(`❌ Error: ${mailError.message}`);
+                console.log("----------------------------------------------------------------\n");
             });
 
-            await transporter.sendMail(mailOptions);
-            console.log(`✔ OTP sent successfully via email to: ${lowerEmail}`);
-        } catch (mailError) {
-            console.log("\n----------------------------------------------------------------");
-            console.log("⚠️ NODEMAILER DELIVERY FAILED (Check your Render Dashboard Environment configuration)");
-            console.log(`🔥 [LOCAL TERMINAL BACKUP] USER OTP IS: ${generatedOtp}`);
-            console.log(`❌ SMTP System Log: ${mailError.message}`);
-            console.log("----------------------------------------------------------------\n");
-        }
-
-        // Always returning 200 so frontend can safely prompt the OTP verification layout
+        // 🔥 INSTANT RESPONSE: Database me save hote hi response bhej do! (No waiting for Google SMTP)
         return res.status(200).json({
             message: "Verification OTP code successfully generated."
         });
 
     } catch (error) {
         console.error("💥 Core Server Registration Crash Logs:", error);
-        return res.status(500).json({ message: "Server encountered an operational failure during signup initialization.", error: error.message });
+        return res.status(500).json({ message: "Server encountered an operational failure during signup.", error: error.message });
     }
 });
 
