@@ -1,17 +1,13 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { Resend } from "resend"; // ── ⚡ IMPORT RESEND ──
 import User from "../models/User.js";
 import LoginLog from "../models/LoginLog.js";
 import { verifyAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// ── 🧠 INITIALIZE RESEND WITH ENVIRONMENT API KEY ──
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// 1. Send OTP & Pre-Register User
+// 1. Send OTP & Pre-Register User (FAST TERMINAL BACKUP LOGIC)
 router.post("/register", async (req, res) => {
     try {
         const { name, email, phone, password } = req.body;
@@ -56,32 +52,15 @@ router.post("/register", async (req, res) => {
             await user.save();
         }
 
-        // ── 🛡️ BULLETPROOF RESEND EMAIL API DISPATCH ENGINE ──
-        // *Note: Resend free tier par default me onboarding@resend.dev se aapki hi email par mail bhejega (Testing ke liye best hai)
-        try {
-            await resend.emails.send({
-                from: "Safai Sewa <onboarding@resend.dev>",
-                to: lowerEmail,
-                subject: 'Safai Sewa Account Verification Security Code',
-                html: `
-                    <div style="font-family: sans-serif; padding: 20px; color: #333;">
-                        <h2>Hello ${name},</h2>
-                        <p>Thank you for choosing Safai Sewa. Your account verification security code is:</p>
-                        <h1 style="color: #2e7d32; font-size: 32px; letter-spacing: 2px;">${generatedOtp}</h1>
-                        <p style="color: #666; font-size: 13px;">*This verification token is valid strictly for the next 10 minutes.</p>
-                    </div>
-                `
-            });
-            console.log(`✔ [Resend API] OTP dispatched instantly to: ${lowerEmail}`);
-        } catch (mailError) {
-            console.log("\n----------------------------------------------------------------");
-            console.log("⚠️ RESEND CLOUD EMAIL ENGINE FAILURE");
-            console.log(`🔥 [LOCAL TERMINAL BACKUP] USER OTP IS: ${generatedOtp}`);
-            console.log(`❌ Error Message: ${mailError.message}`);
-            console.log("----------------------------------------------------------------\n");
-        }
+        // ── 🛡️ SECURE TERMINAL PRINT ENGINE ──
+        // Kisi external service par depend hue bina direct terminal pe instant output
+        console.log("\n----------------------------------------------------------------");
+        console.log("🚀 [FAST-TRACK SECURITY SIMULATION ACTIVE]");
+        console.log(`👤 User: ${name} (${lowerEmail})`);
+        console.log(`🔥 [LIVE LOG BACKUP] USER OTP IS: ${generatedOtp}`);
+        console.log("----------------------------------------------------------------\n");
 
-        // Always returning 200 instantly so frontend can safely prompt the OTP layout
+        // Always returning 200 instantly so frontend can safely prompt the OTP verification layout
         return res.status(200).json({
             message: "Verification OTP code successfully generated."
         });
