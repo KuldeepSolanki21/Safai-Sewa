@@ -1,14 +1,17 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
+import { Resend } from "resend"; // ── ⚡ IMPORT RESEND ──
 import User from "../models/User.js";
 import LoginLog from "../models/LoginLog.js";
 import { verifyAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// 1. Send OTP & Pre-Register User (SUPER-FAST NON-BLOCKING VERSION)
+// ── 🧠 INITIALIZE RESEND WITH ENVIRONMENT API KEY ──
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// 1. Send OTP & Pre-Register User
 router.post("/register", async (req, res) => {
     try {
         const { name, email, phone, password } = req.body;
@@ -53,47 +56,39 @@ router.post("/register", async (req, res) => {
             await user.save();
         }
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: lowerEmail,
-            subject: 'Safai Sewa Account Verification Security Code',
-            text: `Hello ${name},\n\nYour 6-digit account verification code is: ${generatedOtp}\n\nThis code will expire in 10 minutes.`
-        };
-
-        // ── 🛡️ BACKGROUND ASYNC EMAIL ENGINE (Frontend ko wait nahi karwayega) ──
-        const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
-            pool: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
-        // 'await' hata diya hai taaki ye background me chale aur thread block na ho
-        transporter.sendMail(mailOptions)
-            .then(() => console.log(`✔ [Background] OTP sent safely to: ${lowerEmail}`))
-            .catch((mailError) => {
-                console.log("\n----------------------------------------------------------------");
-                console.log("⚠️ NODEMAILER BACKGROUND DELIVERY FAILED");
-                console.log(`🔥 [LOCAL TERMINAL BACKUP] USER OTP IS: ${generatedOtp}`);
-                console.log(`❌ Error: ${mailError.message}`);
-                console.log("----------------------------------------------------------------\n");
+        // ── 🛡️ BULLETPROOF RESEND EMAIL API DISPATCH ENGINE ──
+        // *Note: Resend free tier par default me onboarding@resend.dev se aapki hi email par mail bhejega (Testing ke liye best hai)
+        try {
+            await resend.emails.send({
+                from: "Safai Sewa <onboarding@resend.dev>",
+                to: lowerEmail,
+                subject: 'Safai Sewa Account Verification Security Code',
+                html: `
+                    <div style="font-family: sans-serif; padding: 20px; color: #333;">
+                        <h2>Hello ${name},</h2>
+                        <p>Thank you for choosing Safai Sewa. Your account verification security code is:</p>
+                        <h1 style="color: #2e7d32; font-size: 32px; letter-spacing: 2px;">${generatedOtp}</h1>
+                        <p style="color: #666; font-size: 13px;">*This verification token is valid strictly for the next 10 minutes.</p>
+                    </div>
+                `
             });
+            console.log(`✔ [Resend API] OTP dispatched instantly to: ${lowerEmail}`);
+        } catch (mailError) {
+            console.log("\n----------------------------------------------------------------");
+            console.log("⚠️ RESEND CLOUD EMAIL ENGINE FAILURE");
+            console.log(`🔥 [LOCAL TERMINAL BACKUP] USER OTP IS: ${generatedOtp}`);
+            console.log(`❌ Error Message: ${mailError.message}`);
+            console.log("----------------------------------------------------------------\n");
+        }
 
-        // 🔥 INSTANT RESPONSE: Database me save hote hi response bhej do! (No waiting for Google SMTP)
+        // Always returning 200 instantly so frontend can safely prompt the OTP layout
         return res.status(200).json({
             message: "Verification OTP code successfully generated."
         });
 
     } catch (error) {
         console.error("💥 Core Server Registration Crash Logs:", error);
-        return res.status(500).json({ message: "Server encountered an operational failure during signup.", error: error.message });
+        return res.status(500).json({ message: "Server encountered an operational failure during signup initialization.", error: error.message });
     }
 });
 
