@@ -37,6 +37,7 @@ router.post("/register", async (req, res) => {
             user.otp = generatedOtp;
             user.otpExpires = otpExpiryTime;
             user.role = assignedRole;
+            user.isVerified = true;
             await user.save();
         } else {
             user = new User({
@@ -47,22 +48,35 @@ router.post("/register", async (req, res) => {
                 otp: generatedOtp,
                 otpExpires: otpExpiryTime,
                 role: assignedRole,
-                isVerified: false
+                isVerified: true
             });
             await user.save();
         }
 
-        // ── 🛡️ SECURE TERMINAL PRINT ENGINE ──
-        // Kisi external service par depend hue bina direct terminal pe instant output
-        console.log("\n----------------------------------------------------------------");
-        console.log("🚀 [FAST-TRACK SECURITY SIMULATION ACTIVE]");
-        console.log(`👤 User: ${name} (${lowerEmail})`);
-        console.log(`🔥 [LIVE LOG BACKUP] USER OTP IS: ${generatedOtp}`);
-        console.log("----------------------------------------------------------------\n");
+        const token = jwt.sign(
+            { userId: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "24h" }
+        );
 
-        // Always returning 200 instantly so frontend can safely prompt the OTP verification layout
+        const newLog = new LoginLog({
+            name: user.name,
+            email: user.email,
+            role: user.role
+        });
+        await newLog.save();
+
+        console.log(`✔ User registered & verified instantly: ${name} (${lowerEmail})`);
+
         return res.status(200).json({
-            message: "Verification OTP code successfully generated."
+            message: "Account registered successfully!",
+            token,
+            role: user.role,
+            user: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone
+            }
         });
 
     } catch (error) {
@@ -107,13 +121,14 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ message: "please enter valid user" });
         }
 
-        if (!user.isVerified) {
-            return res.status(401).json({ message: "Account authentication pending. Please verify via email OTP sequence first." });
-        }
-
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ message: "please enter valid user" });
+            return res.status(400).json({ message: "Invalid email or password." });
+        }
+
+        if (!user.isVerified) {
+            user.isVerified = true;
+            await user.save();
         }
 
         const token = jwt.sign(

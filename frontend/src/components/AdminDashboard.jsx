@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BACKEND_URL } from "../config/api";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
@@ -10,10 +11,7 @@ export default function AdminDashboard() {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const navigate = useNavigate();
 
-    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
-    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // BACKEND_URL imported from ../config/api
 
     useEffect(() => {
         const token = localStorage.getItem("token");

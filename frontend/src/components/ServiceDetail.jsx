@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { servicesData } from "../Data/servicesdata";
+import { BACKEND_URL } from "../config/api";
 import "../styles/ServiceDetail.css";
 
 import OurProcess from "./OurProcess";
@@ -22,15 +23,13 @@ export default function ServiceDetail() {
         address: ""
     });
 
-    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
-    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // BACKEND_URL imported from ../config/api
 
     const currentHoursList = service?.hoursOptions || [2, 3, 4];
     const [selectedHours, setSelectedHours] = useState(currentHoursList[0]);
     const [finalPrice, setFinalPrice] = useState(0);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [todayDate, setTodayDate] = useState("");
 
     // Calculate current date constraint window
@@ -116,6 +115,7 @@ export default function ServiceDetail() {
 
     const handleBookingSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         if (bookingData.phone.length !== 10) {
             alert("Phone number must be exactly 10 digits.");
@@ -132,7 +132,7 @@ export default function ServiceDetail() {
             return catMap[activeCategory] || "Full Home Cleaning";
         };
 
-        const selectedOptionText = e.target.elements.selectedService.options[e.target.elements.selectedService.selectedIndex].text;
+        const selectedOptionText = service?.title || 'Cleaning Service';
 
         try {
             const response = await fetch(`${BACKEND_URL}/api/bookings/create`, {
@@ -163,7 +163,9 @@ export default function ServiceDetail() {
             }
         } catch (error) {
             console.error("Service submission database dispatch error:", error);
-            alert("Server down. Please check backend environment logs connection execution state.");
+            alert("Server connection error. Please ensure backend is awake and try again.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -393,8 +395,8 @@ export default function ServiceDetail() {
                                         />
                                     </div>
 
-                                    <button type="submit" className="confirm-booking-btn">
-                                        Confirm Appointment
+                                    <button type="submit" className="confirm-booking-btn" disabled={isSubmitting}>
+                                        {isSubmitting ? "Confirming Appointment..." : "Confirm Appointment"}
                                     </button>
                                 </form>
                             )}

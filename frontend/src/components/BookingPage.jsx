@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { bookingServices } from "../Data/bookingservicesData";
+import { BACKEND_URL } from "../config/api";
 import "../styles/BookingPage.css";
 
 export default function BookingPage() {
@@ -18,12 +19,10 @@ export default function BookingPage() {
         address: ""
     });
     const [isSuccess, setIsSuccess] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [todayDate, setTodayDate] = useState("");
 
-    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
-    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // BACKEND_URL imported from ../config/api
 
     // Auto-fill logged in user info
     useEffect(() => {
@@ -97,6 +96,7 @@ export default function BookingPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         if (formData.phone.length !== 10) {
             alert("Phone number must be exactly 10 digits.");
@@ -131,7 +131,9 @@ export default function BookingPage() {
             }
         } catch (error) {
             console.error("Booking verification submission failure:", error);
-            alert("Server connection failed. Please ensure the backend server layer is live.");
+            alert("Server connection failed. Please ensure backend is awake and try again.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -274,8 +276,8 @@ export default function BookingPage() {
                                     <textarea name="address" rows="3" required placeholder="Flat / House No, Building, Area details" value={formData.address} onChange={handleInputChange}></textarea>
                                 </div>
 
-                                <button type="submit" className="bk-submit-btn">
-                                    Confirm Live Booking
+                                <button type="submit" className="bk-submit-btn" disabled={isSubmitting}>
+                                    {isSubmitting ? "Processing Booking..." : "Confirm Live Booking"}
                                 </button>
                             </form>
                         ) : (

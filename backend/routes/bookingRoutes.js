@@ -13,16 +13,17 @@ router.post("/create", async (req, res) => {
         }
 
         const newBooking = new Booking({
-            name,
-            phone,
+            name: name.trim(),
+            phone: phone.trim(),
             category,
             serviceName,
-            hours,
-            price,
+            hours: Number(hours),
+            price: Number(price),
             date,
             timeSlot,
             address,
-            propertySize: propertySize || "N/A"
+            propertySize: propertySize || "N/A",
+            status: "Pending"
         });
 
         await newBooking.save();

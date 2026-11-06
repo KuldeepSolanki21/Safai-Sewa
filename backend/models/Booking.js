@@ -11,7 +11,8 @@ const bookingSchema = new mongoose.Schema({
     timeSlot: { type: String, required: true },
     address: { type: String, required: true },
     // Injected to support both multi-page forms into one single database table
-    propertySize: { type: String, default: "N/A" }
+    propertySize: { type: String, default: "N/A" },
+    status: { type: String, default: "Pending" }
 }, { timestamps: true });
 
 const Booking = mongoose.model("Booking", bookingSchema);

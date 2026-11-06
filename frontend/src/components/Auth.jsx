@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { BACKEND_URL } from "../config/api";
 import "../styles/Auth.css";
 
 export default function Auth({ onClose }) {
     const [isSignUp, setIsSignUp] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isForgot, setIsForgot] = useState(false);
     const [forgotEmail, setForgotEmail] = useState("");
 
@@ -17,10 +19,7 @@ export default function Auth({ onClose }) {
         confirmPassword: ""
     });
 
-    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
-    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // BACKEND_URL imported from ../config/api
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -64,6 +63,7 @@ export default function Auth({ onClose }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         if (isForgot) {
             try {
@@ -101,8 +101,18 @@ export default function Auth({ onClose }) {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert("Verification OTP code has been transmitted to your email inbox.");
-                    setIsOtpStage(true);
+                    if (data.token) {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('userRole', data.role || 'customer');
+                        localStorage.setItem('userName', data.user?.name || formData.name);
+                        localStorage.setItem('userPhone', data.user?.phone || formData.phone);
+                        alert("Registration successful! Welcome to Safai Sewa.");
+                        onClose();
+                        window.location.reload();
+                    } else {
+                        alert(data.message || "Registration successful! Please login.");
+                        setIsSignUp(false);
+                    }
                 } else {
                     alert(data.message || "Registration failed.");
                 }
@@ -136,7 +146,9 @@ export default function Auth({ onClose }) {
                 }
             } catch (error) {
                 console.error("Login monitoring layer runtime error logs stack:", error);
-                alert("Connection architecture state tracking validation errors.");
+                alert("Connection error. Server may be waking up, please try again in a few seconds.");
+            } finally {
+                setIsSubmitting(false);
             }
         }
     };

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { warmUpBackend } from "./config/api";
 
 
 import Header from './components/Header';
@@ -54,6 +55,11 @@ const PageLoader = () => (
 );
 
 function App() {
+  useEffect(() => {
+    // Ping backend in background on first visit so Render cold start wakes up early
+    warmUpBackend();
+  }, []);
+
   return (
     <Router>
       <Header />

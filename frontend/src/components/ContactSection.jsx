@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BACKEND_URL } from "../config/api";
 import "../styles/ContactSection.css";
 
 export default function ContactSection() {
@@ -6,10 +7,7 @@ export default function ContactSection() {
     const [sent, setSent] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // ── 🧠 DYNAMIC RUNTIME CHECK (NO ENVIRONMENT VARIABLES REQUIRED) ──
-    const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000"
-        : "https://safai-sewa.onrender.com";
+    // BACKEND_URL imported from ../config/api
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
