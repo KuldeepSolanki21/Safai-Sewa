@@ -8,6 +8,11 @@ const connectDB = async () => {
         return;
     }
 
+    if (process.env.RENDER && (mongoUri.includes("127.0.0.1") || mongoUri.includes("localhost"))) {
+        console.error("❌ Render Warning: MONGO_URI is set to localhost/127.0.0.1! Render container cannot connect to local MongoDB. Please update MONGO_URI in Render Dashboard with your MongoDB Atlas connection string (mongodb+srv://...).");
+        return;
+    }
+
     try {
         const conn = await mongoose.connect(mongoUri, {
             serverSelectionTimeoutMS: 5000 // Quick 5s timeout instead of hanging 30s

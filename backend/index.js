@@ -10,7 +10,12 @@ import Booking from "./models/Booking.js";
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+const rawPort = process.env.PORT;
+const parsedPort = parseInt(rawPort, 10);
+const PORT = (!isNaN(parsedPort) && parsedPort > 0)
+    ? parsedPort
+    : (process.env.RENDER ? 10000 : 5000);
 
 // Connect to MongoDB without crashing the server if offline
 connectDB();
@@ -71,6 +76,6 @@ app.get("/", (req, res) => {
     res.send("Safai Sewa API Server Live Matrix.");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server structural application initialized on port endpoint: ${PORT}`);
 });
